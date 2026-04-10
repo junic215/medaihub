@@ -244,8 +244,13 @@ section {
 /* Grids & Cards */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
@@ -353,16 +358,46 @@ section {
   .hero {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 40px 0;
   }
   .hero-desc {
     margin: 32px auto;
   }
   .hero-ctas, .hero-stats {
     justify-content: center;
+    flex-wrap: wrap;
   }
   .teaser-box {
     flex-direction: column;
     text-align: center;
+    padding: 40px 24px;
   }
   .teaser-icon { display: none; }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+  .nav-links { display: none; }
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .glass-card {
+    padding: 24px;
+  }
+  .ranking-container {
+    grid-template-columns: 1fr;
+  }
+  .rank-item {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 24px;
+  }
+  .rank-number {
+    margin-bottom: 0;
+  }
+  .footer-bottom {
+    text-align: center;
+  }
 }
