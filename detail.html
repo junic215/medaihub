@@ -169,6 +169,11 @@
             <i data-lucide="share-2"></i>
             <span>シェア</span>
         </button>
+        <div style="width: 1px; background: var(--border); margin: 0 8px;"></div>
+        <button class="reaction-btn" style="color: #ef4444;" onclick="adminDelete()">
+            <i data-lucide="trash-2"></i>
+            <span>削除</span>
+        </button>
     </div>
 
     <footer style="padding: 100px 0;">
@@ -246,6 +251,31 @@
                 document.getElementById('detail-loading').innerText = '事例が見つかりませんでした。';
             }
             lucide.createIcons();
+        }
+
+        async function adminDelete() {
+            const pwd = prompt('管理者パスワードを入力してください：');
+            if (!pwd) return;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            const { data, error } = await window.medai.client.rpc('delete_case_with_password', {
+                target_id: id,
+                input_password: pwd
+            });
+
+            if (error) {
+                alert('エラーが発生しました: ' + error.message);
+                return;
+            }
+
+            if (data === true) {
+                alert('事例を削除しました。');
+                window.location.href = 'index.html';
+            } else {
+                alert('パスワードが正しくありません。');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', loadDetail);

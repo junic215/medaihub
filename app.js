@@ -1,9 +1,9 @@
 // MedAI HUB - Central App Logic
 const DEFAULT_IMAGES = [
-    "https://images.unsplash.com/photo-1576091160550-217359f49f4c?auto=format&fit=crop&q=80&w=800",
-    "https://images.unsplash.com/photo-1516549221152-da7462934a64?auto=format&fit=crop&q=80&w=800",
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-    "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&q=80&w=800"
+    "01.png",
+    "02.png",
+    "03.png",
+    "04.png"
 ];
 
 // UUIDから数字のインデックスを生成するヘルパー

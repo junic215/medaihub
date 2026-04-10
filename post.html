@@ -105,9 +105,9 @@
 
                 <!-- 画像選択 -->
                 <div class="form-group">
-                    <label>サムネイル画像</label>
+                    <label>サムネイル画像<span>必須</span></label>
                     <div class="upload-section">
-                        <div class="upload-area" onclick="document.getElementById('file-upload').click()">
+                        <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-upload').click()">
                             <i data-lucide="upload-cloud"></i>
                             <p id="upload-status" style="font-weight: bold; margin-top: 10px;">画像をアップロード</p>
                             <input type="file" id="file-upload" hidden accept="image/*">
@@ -115,20 +115,20 @@
                         <div>
                             <p style="font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; color: var(--text-muted);">またはデフォルトから選択</p>
                             <div class="image-picker" id="image-picker">
-                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1576091160550-217359f49f4c?w=400">
-                                    <img src="https://images.unsplash.com/photo-1576091160550-217359f49f4c?w=400" alt="Option 1">
+                                <div class="picker-option" data-img="01.png">
+                                    <img src="01.png" alt="Option 1">
                                     <i data-lucide="check-circle" style="width: 16px;"></i>
                                 </div>
-                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1516549221152-da7462934a64?w=400">
-                                    <img src="https://images.unsplash.com/photo-1516549221152-da7462934a64?w=400" alt="Option 2">
+                                <div class="picker-option" data-img="02.png">
+                                    <img src="02.png" alt="Option 2">
                                     <i data-lucide="check-circle" style="width: 16px;"></i>
                                 </div>
-                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400">
-                                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="Option 3">
+                                <div class="picker-option" data-img="03.png">
+                                    <img src="03.png" alt="Option 3">
                                     <i data-lucide="check-circle" style="width: 16px;"></i>
                                 </div>
-                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=400">
-                                    <img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=400" alt="Option 4">
+                                <div class="picker-option" data-img="04.png">
+                                    <img src="04.png" alt="Option 4">
                                     <i data-lucide="check-circle" style="width: 16px;"></i>
                                 </div>
                             </div>
@@ -199,6 +199,13 @@
 
         document.getElementById('post-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Image Validation
+            if (!selectedDefaultImg && fileInput.files.length === 0) {
+                alert('画像は必須です。アップロードするか、右側の「選択肢」からお選びください。');
+                return;
+            }
+
             const btn = document.getElementById('submit-btn');
             btn.disabled = true; btn.innerText = "送信中...";
 
