@@ -68,12 +68,12 @@ function renderCards(containerId, cases) {
 
 // Supabase Integration Logic
 async function fetchCases() {
-    if (!window.medai || !window.medai.supabase) {
+    if (!window.medai || !window.medai.client) {
         console.warn('Supabase not configured, using mock data.');
         return mockCases;
     }
 
-    const { data, error } = await window.medai.supabase
+    const { data, error } = await window.medai.client
         .from('cases')
         .select('*')
         .eq('status', 'approved')

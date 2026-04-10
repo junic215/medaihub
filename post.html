@@ -195,7 +195,7 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            if (!window.medai.supabase) {
+            if (!window.medai.client) {
                 alert('Supabaseが設定されていません。supabase.jsを確認してください。');
                 return;
             }
@@ -213,12 +213,12 @@
                     const fileName = `${Math.random()}.${fileExt}`;
                     const filePath = `uploads/${fileName}`;
 
-                    const { error: uploadError } = await window.medai.supabase.storage
+                    const { error: uploadError } = await window.medai.client.storage
                         .from('case-images')
                         .upload(filePath, file);
 
                     if (!uploadError) {
-                        const { data: { publicUrl } } = window.medai.supabase.storage
+                        const { data: { publicUrl } } = window.medai.client.storage
                             .from('case-images')
                             .getPublicUrl(filePath);
                         imageUrl = publicUrl;
@@ -226,7 +226,7 @@
                 }
 
                 // 2. Insert into DB
-                const { data, error } = await window.medai.supabase
+                const { data, error } = await window.medai.client
                     .from('cases')
                     .insert([{
                         title: document.getElementById('form-title').value,

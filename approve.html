@@ -35,7 +35,7 @@
 
             try {
                 // Call the RPC function we defined in schema
-                const { data, error } = await window.medai.supabase.rpc('approve_case_with_token', {
+                const { data, error } = await window.medai.client.rpc('approve_case_with_token', {
                     case_id: id,
                     token: token
                 });
