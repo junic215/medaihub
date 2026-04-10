@@ -50,8 +50,16 @@
             <div class="section-header">
                 <h2>注目事例ランキング</h2>
             </div>
-            <div class="ranking-scroll" id="featured-grid">
-                <!-- JS will inject top 1-5 here -->
+            <div class="ranking-wrapper">
+                <button class="nav-btn-circle nav-btn-prev" onclick="moveRank(-1)">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+                <div class="ranking-scroll" id="featured-grid">
+                    <!-- JS will inject top 1-5 here -->
+                </div>
+                <button class="nav-btn-circle nav-btn-next" onclick="moveRank(1)">
+                    <i data-lucide="chevron-right"></i>
+                </button>
             </div>
         </section>
 
