@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス紹介 | MedAI HUB</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .service-hero {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg), #e0f2fe);
+        }
+        .service-hero h1 {
+            font-size: 4rem;
+            margin-bottom: 24px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin: 80px 0;
+        }
+        .feature-card {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .feature-card i {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+        .feature-card h3 {
+            margin-bottom: 16px;
+        }
+        .pricing-section {
+            background: var(--text-main);
+            color: white;
+            padding: 100px 0;
+            border-radius: var(--radius-lg);
+            margin: 80px 0;
+        }
+        @media (max-width: 768px) {
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="container">
+        <nav>
+            <a href="index.html" class="logo">
+                <i data-lucide="activity"></i>
+                MedAI HUB
+            </a>
+            <ul class="nav-links">
+                <li><a href="list.html" class="nav-link">事例を見る</a></li>
+                <li><a href="ranking.html" class="nav-link">ランキング</a></li>
+                <li><a href="service.html" class="nav-link active" style="color: var(--primary)">導入支援</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="service-hero">
+            <div class="container">
+                <span class="badge">Official Support Service</span>
+                <h1>あなたの病院に、<br><span class="gradient-text">AIの翼を。</span></h1>
+                <p class="hero-desc" style="margin: 32px auto;">MedAI HUBが提供するAI導入コンサルティング。戦略策定から現場浸透まで、医療DXのプロフェッショナルが伴走します。</p>
+                <a href="#contact" class="btn btn-primary" style="padding: 18px 40px; font-size: 1.25rem;">無料で相談を開始する</a>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 style="text-align: center;">私たちが解決すること</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i data-lucide="shield-check"></i>
+                    <h3>安全な導入体制</h3>
+                    <p>個人情報保護やセキュリティガイドラインに準拠した、安全なAI利用環境を構築します。</p>
+                </div>
+                <div class="feature-card">
+                    <i data-lucide="users"></i>
+                    <h3>現場への浸透</h3>
+                    <p>医師や職員が使いこなせるよう、実務に即した勉強会やマニュアル整備を支援します。</p>
+                </div>
+                <div class="feature-card">
+                    <i data-lucide="trending-up"></i>
+                    <h3>成果の見える化</h3>
+                    <p>導入による時間短縮効果やコスト削減、患者満足度の向上を定量的に分析・報告します。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="contact" style="margin-bottom: 100px;">
+            <div class="glass-card" style="padding: 60px; text-align: center;">
+                <h2>まずはお話を聞かせてください</h2>
+                <p style="margin: 24px 0; color: var(--text-muted);">現在の業務課題や、検討中のAIツールについて、専門スタッフがアドバイスいたします。</p>
+                <form onsubmit="event.preventDefault(); alert('お問い合わせを受け付けました。担当者よりご連絡いたします。');" style="max-width: 500px; margin: 40px auto; display: flex; flex-direction: column; gap: 16px;">
+                    <input type="text" placeholder="病院・クリニック名" class="form-control" required style="border: 1px solid var(--border)">
+                    <input type="email" placeholder="メールアドレス" class="form-control" required style="border: 1px solid var(--border)">
+                    <textarea placeholder="お問い合わせ内容" class="form-control" style="min-height: 100px; border: 1px solid var(--border)"></textarea>
+                    <button type="submit" class="btn btn-primary" style="justify-content: center; height: 54px;">送信する</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container" style="padding: 40px 0; border-top: 1px solid var(--border);">
+        <p style="text-align: center; color: var(--text-muted);">&copy; 2026 MedAI HUB</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

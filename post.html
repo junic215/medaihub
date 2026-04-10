@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事例を投稿する | MedAI HUB</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 0;
+        }
+        .form-card {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .form-group label span {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-left: 4px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .hint {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .upload-area {
+            border: 2px dashed var(--border);
+            padding: 40px;
+            text-align: center;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .upload-area i {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header class="container">
+        <nav>
+            <a href="index.html" class="logo">
+                <i data-lucide="activity"></i>
+                MedAI HUB
+            </a>
+            <div class="nav-actions">
+                <a href="list.html" class="nav-link">キャンセル</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="form-container">
+            <header style="text-align: center; margin-bottom: 40px;">
+                <h1>AI活用事例を共有する</h1>
+                <p style="color: var(--text-muted); margin-top: 12px;">あなたの気づきが、現場の負担を減らす力になります。</p>
+            </header>
+
+            <form class="form-card" id="post-form">
+                <div class="form-group">
+                    <label>タイトル（解決した課題の要約）<span>必須</span></label>
+                    <input type="text" class="form-control" placeholder="例: ChatGPTを使用した紹介状の半自動作成システム" required>
+                </div>
+
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <label>使用したAIツール<span>必須</span></label>
+                        <select class="form-control" required>
+                            <option value="">選択してください</option>
+                            <option value="chatgpt">ChatGPT</option>
+                            <option value="claude">Claude</option>
+                            <option value="gemini">Gemini</option>
+                            <option value="notion_ai">Notion AI</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>カテゴリ<span>必須</span></label>
+                        <select class="form-control" required>
+                            <option value="">選択してください</option>
+                            <option value="admin">事務効率化</option>
+                            <option value="clinical">診療支援</option>
+                            <option value="patient">患者サービス</option>
+                            <option value="education">教育・研修</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>具体的な活用方法（プロンプトや運用フローなど）<span>必須</span></label>
+                    <textarea class="form-control" placeholder="どのような課題があり、AIをどう使って、どのような結果が得られたか詳しく記入してください。" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>参考画像</label>
+                    <div class="upload-area" onclick="document.getElementById('file-upload').click()">
+                        <i data-lucide="image"></i>
+                        <p>クリックして画像をアップロード、またはドラッグ＆ドロップ</p>
+                        <span class="hint">スクリーンショットや運用フロー図など（最大5MB）</span>
+                        <input type="file" id="file-upload" hidden accept="image/*">
+                    </div>
+                </div>
+
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid var(--border); padding-top: 24px;">
+                    <div>
+                        <label>病院・クリニック名<span>必須</span></label>
+                        <input type="text" class="form-control" placeholder="〇〇病院" required>
+                    </div>
+                    <div>
+                        <label>投稿者名（ニックネーム可）<span>必須</span></label>
+                        <input type="text" class="form-control" placeholder="山田 太郎（医師）" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>メールアドレス<span>必須</span></label>
+                    <input type="email" class="form-control" placeholder="example@hospital.com" required>
+                    <p class="hint">承認通知用。サイト上には公開されません。</p>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; height: 54px; font-size: 1.1rem;">
+                        事例を投稿する
+                    </button>
+                    <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">
+                        ※ 管理者の承認後に公開されます。
+                    </p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer style="padding: 40px 0;">
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.875rem;">&copy; 2026 MedAI HUB</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+        document.getElementById('post-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('投稿ありがとうございます！管理者の承認までお待ちください。');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
