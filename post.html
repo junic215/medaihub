@@ -99,69 +99,69 @@
             <form class="form-card" id="post-form">
                 <div class="form-group">
                     <label>タイトル（解決した課題の要約）<span>必須</span></label>
-                    <input type="text" class="form-control" placeholder="例: ChatGPTを使用した紹介状の半自動作成システム" required>
+                    <input type="text" class="form-control" id="form-title" placeholder="例: ChatGPTを使用した紹介状の半自動作成システム" required>
                 </div>
 
                 <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
                         <label>使用したAIツール<span>必須</span></label>
-                        <select class="form-control" required>
-                            <option value="">選択してください</option>
-                            <option value="chatgpt">ChatGPT</option>
-                            <option value="claude">Claude</option>
-                            <option value="gemini">Gemini</option>
-                            <option value="notion_ai">Notion AI</option>
-                            <option value="other">その他</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>カテゴリ<span>必須</span></label>
-                        <select class="form-control" required>
-                            <option value="">選択してください</option>
-                            <option value="admin">事務効率化</option>
-                            <option value="clinical">診療支援</option>
-                            <option value="patient">患者サービス</option>
-                            <option value="education">教育・研修</option>
-                        </select>
-                    </div>
+                    <select class="form-control" id="form-tool" required>
+                        <option value="">選択してください</option>
+                        <option value="ChatGPT">ChatGPT</option>
+                        <option value="Claude">Claude</option>
+                        <option value="Gemini">Gemini</option>
+                        <option value="Notion AI">Notion AI</option>
+                        <option value="その他">その他</option>
+                    </select>
                 </div>
-
-                <div class="form-group">
-                    <label>具体的な活用方法（プロンプトや運用フローなど）<span>必須</span></label>
-                    <textarea class="form-control" placeholder="どのような課題があり、AIをどう使って、どのような結果が得られたか詳しく記入してください。" required></textarea>
+                <div>
+                    <label>カテゴリ<span>必須</span></label>
+                    <select class="form-control" id="form-category" required>
+                        <option value="">選択してください</option>
+                        <option value="事務効率化">事務効率化</option>
+                        <option value="診療支援">診療支援</option>
+                        <option value="患者サービス">患者サービス</option>
+                        <option value="教育・研修">教育・研修</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label>参考画像</label>
-                    <div class="upload-area" onclick="document.getElementById('file-upload').click()">
-                        <i data-lucide="image"></i>
-                        <p>クリックして画像をアップロード、またはドラッグ＆ドロップ</p>
-                        <span class="hint">スクリーンショットや運用フロー図など（最大5MB）</span>
-                        <input type="file" id="file-upload" hidden accept="image/*">
-                    </div>
+            <div class="form-group">
+                <label>具体的な活用方法（プロンプトや運用フローなど）<span>必須</span></label>
+                <textarea class="form-control" id="form-content" placeholder="どのような課題があり、AIをどう使って、どのような結果が得られたか詳しく記入してください。" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>参考画像</label>
+                <div class="upload-area" onclick="document.getElementById('file-upload').click()">
+                    <i data-lucide="image"></i>
+                    <p id="upload-status">クリックして画像をアップロード、またはドラッグ＆ドロップ</p>
+                    <span class="hint">スクリーンショットや運用フロー図など（最大5MB）</span>
+                    <input type="file" id="file-upload" hidden accept="image/*">
                 </div>
+            </div>
 
-                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid var(--border); padding-top: 24px;">
-                    <div>
-                        <label>病院・クリニック名<span>必須</span></label>
-                        <input type="text" class="form-control" placeholder="〇〇病院" required>
-                    </div>
-                    <div>
-                        <label>投稿者名（ニックネーム可）<span>必須</span></label>
-                        <input type="text" class="form-control" placeholder="山田 太郎（医師）" required>
-                    </div>
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid var(--border); padding-top: 24px;">
+                <div>
+                    <label>病院・クリニック名<span>必須</span></label>
+                    <input type="text" class="form-control" id="form-hospital" placeholder="〇〇病院" required>
                 </div>
-
-                <div class="form-group">
-                    <label>メールアドレス<span>必須</span></label>
-                    <input type="email" class="form-control" placeholder="example@hospital.com" required>
-                    <p class="hint">承認通知用。サイト上には公開されません。</p>
+                <div>
+                    <label>投稿者名（ニックネーム可）<span>必須</span></label>
+                    <input type="text" class="form-control" id="form-author" placeholder="山田 太郎（医師）" required>
                 </div>
+            </div>
 
-                <div style="margin-top: 40px;">
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; height: 54px; font-size: 1.1rem;">
-                        事例を投稿する
-                    </button>
+            <div class="form-group">
+                <label>メールアドレス<span>必須</span></label>
+                <input type="email" class="form-control" id="form-email" placeholder="example@hospital.com" required>
+                <p class="hint">承認通知用。サイト上には公開されません。</p>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; justify-content: center; height: 54px; font-size: 1.1rem;">
+                    事例を投稿する
+                </button>
                     <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">
                         ※ 管理者の承認後に公開されます。
                     </p>
@@ -179,10 +179,79 @@
     <script src="app.js"></script>
     <script>
         lucide.createIcons();
-        document.getElementById('post-form').addEventListener('submit', (e) => {
+        
+        const form = document.getElementById('post-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const fileInput = document.getElementById('file-upload');
+        const uploadStatus = document.getElementById('upload-status');
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                uploadStatus.innerText = `選択済み: ${fileInput.files[0].name}`;
+                uploadStatus.style.color = 'var(--primary)';
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('投稿ありがとうございます！管理者の承認までお待ちください。');
-            window.location.href = 'index.html';
+            
+            if (!window.medai.supabase) {
+                alert('Supabaseが設定されていません。supabase.jsを確認してください。');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = '送信中...';
+
+            try {
+                let imageUrl = null;
+
+                // 1. Image Upload (Shortening for demo, but setup bucket 'case-images' first)
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Math.random()}.${fileExt}`;
+                    const filePath = `uploads/${fileName}`;
+
+                    const { error: uploadError } = await window.medai.supabase.storage
+                        .from('case-images')
+                        .upload(filePath, file);
+
+                    if (!uploadError) {
+                        const { data: { publicUrl } } = window.medai.supabase.storage
+                            .from('case-images')
+                            .getPublicUrl(filePath);
+                        imageUrl = publicUrl;
+                    }
+                }
+
+                // 2. Insert into DB
+                const { data, error } = await window.medai.supabase
+                    .from('cases')
+                    .insert([{
+                        title: document.getElementById('form-title').value,
+                        tool: document.getElementById('form-tool').value,
+                        category: document.getElementById('form-category').value,
+                        content: document.getElementById('form-content').value,
+                        hospital_name: document.getElementById('form-hospital').value,
+                        author_name: document.getElementById('form-author').value,
+                        email: document.getElementById('form-email').value,
+                        image_url: imageUrl,
+                        status: 'pending' // Always pending at first
+                    }]);
+
+                if (error) throw error;
+
+                alert('投稿ありがとうございます！管理者の承認までお待ちください。');
+                window.location.href = 'index.html';
+
+            } catch (err) {
+                console.error(err);
+                alert('エラーが発生しました: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = '事例を投稿する';
+            }
         });
     </script>
 </body>
