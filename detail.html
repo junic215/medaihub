@@ -208,17 +208,41 @@
                 document.getElementById('meta-category').innerText = data.category;
                 document.getElementById('meta-views').innerText = data.views || 0;
                 document.getElementById('meta-date').innerText = new Date(data.created_at).toLocaleDateString();
-                document.getElementById('detail-author').innerText = data.author_name;
-                document.getElementById('detail-hospital').innerText = data.hospital_name;
-                document.getElementById('detail-body').innerText = data.content;
+                
+                // Privacy toggles
+                document.getElementById('detail-author').innerText = data.show_author ? data.author_name : "非公開";
+                document.getElementById('detail-hospital').innerText = data.show_hospital ? data.hospital_name : "非公開";
+                
+                // Detailed sections
+                const bodyHtml = `
+                    <div class="content-section">
+                        <h3>1. 解決したかった課題</h3>
+                        <p>${data.content_goal || ''}</p>
+                    </div>
+                    <div class="content-section">
+                        <h3>2. どのように解決したか</h3>
+                        <p>${data.content_how || ''}</p>
+                    </div>
+                    <div class="content-section">
+                        <h3>3. どのような効果があったか</h3>
+                        <p>${data.content_impact || ''}</p>
+                    </div>
+                    ${data.content_other ? `
+                    <div class="content-section">
+                        <h3>4. その他（補足等）</h3>
+                        <p>${data.content_other}</p>
+                    </div>` : ''}
+                `;
+                document.getElementById('detail-body').innerHTML = bodyHtml;
                 document.getElementById('detail-tool').innerText = data.tool;
 
                 const img = document.getElementById('detail-image');
-                img.src = data.image_url || getRandomDefaultImage(data.id);
+                img.src = data.image_url || getRandomDefaultImage(getIndexFromId(data.id));
                 
-                // 閲覧数を増やす(バックグラウンドで)
+                // 閲覧数を増やす
                 window.medai.client.rpc('increment_views', { case_id: id });
-            } else {
+            }
+ else {
                 document.getElementById('detail-loading').innerText = '事例が見つかりませんでした。';
             }
             lucide.createIcons();

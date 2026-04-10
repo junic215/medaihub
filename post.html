@@ -10,247 +10,236 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 0;
-        }
-        .form-card {
-            background: var(--surface);
-            padding: 40px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-        }
-        .form-group {
-            margin-bottom: 24px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-        .form-group label span {
-            color: #ef4444;
-            font-size: 0.75rem;
-            margin-left: 4px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-        .hint {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-        .upload-area {
-            border: 2px dashed var(--border);
-            padding: 40px;
-            text-align: center;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .upload-area:hover {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-        .upload-area i {
-            font-size: 32px;
-            margin-bottom: 12px;
+        .form-container { max-width: 850px; margin: 0 auto; padding: 60px 0; }
+        .form-card { background: var(--surface); padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-md); }
+        .form-group { margin-bottom: 32px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--text-main); font-size: 1.1rem; }
+        .form-group label span { color: #ef4444; font-size: 0.75rem; margin-left: 4px; }
+        .form-control { width: 100%; padding: 14px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 1rem; transition: all 0.2s; }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+        textarea.form-control { min-height: 100px; resize: vertical; }
+        .hint { font-size: 0.875rem; color: var(--text-muted); margin-top: 6px; }
+        
+        .upload-section { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 24px; }
+        .upload-area { border: 2px dashed var(--border); padding: 30px; text-align: center; border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .upload-area:hover { border-color: var(--primary); background: var(--primary-light); }
+        
+        /* Image Picker */
+        .image-picker { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .picker-option { position: relative; cursor: pointer; border-radius: 8px; overflow: hidden; border: 3px solid transparent; transition: all 0.2s; }
+        .picker-option img { width: 100%; height: 80px; object-fit: cover; display: block; }
+        .picker-option.selected { border-color: var(--primary); transform: scale(0.95); }
+        .picker-option i { position: absolute; top: 4px; right: 4px; color: var(--primary); background: white; border-radius: 50%; display: none; }
+        .picker-option.selected i { display: block; }
+
+        /* Toggles */
+        .toggle-group { display: flex; gap: 24px; background: #f8fafc; padding: 16px; border-radius: 12px; margin-top: 8px; }
+        .toggle-item { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 600; }
+        .toggle-item input { width: 18px; height: 18px; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .upload-section { grid-template-columns: 1fr; }
+            .form-card { padding: 24px; }
         }
     </style>
 </head>
 <body>
     <header class="container">
         <nav>
-            <a href="index.html" class="logo">
-                <i data-lucide="activity"></i>
-                MedAI HUB
-            </a>
-            <div class="nav-actions">
-                <a href="list.html" class="nav-link">キャンセル</a>
-            </div>
+            <a href="index.html" class="logo"><i data-lucide="activity"></i> MedAI HUB</a>
+            <div class="nav-actions"><a href="list.html" class="nav-link">キャンセル</a></div>
         </nav>
     </header>
 
     <main class="container">
         <div class="form-container">
             <header style="text-align: center; margin-bottom: 40px;">
-                <h1>AI活用事例を共有する</h1>
-                <p style="color: var(--text-muted); margin-top: 12px;">あなたの気づきが、現場の負担を減らす力になります。</p>
+                <h1 style="font-size: 2.5rem;">AI活用事例を共有</h1>
+                <p style="color: var(--text-muted); margin-top: 12px;">※ 管理者の承認後に公開されます。</p>
             </header>
 
             <form class="form-card" id="post-form">
+                <!-- 基本情報 -->
                 <div class="form-group">
-                    <label>タイトル（解決した課題の要約）<span>必須</span></label>
-                    <input type="text" class="form-control" id="form-title" placeholder="例: ChatGPTを使用した紹介状の半自動作成システム" required>
+                    <label>事例のタイトル<span>必須</span></label>
+                    <input type="text" class="form-control" id="form-title" placeholder="例: ChatGPTによる紹介状作成の効率化" required>
                 </div>
 
-                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <label>使用したAIツール<span>必須</span></label>
-                    <select class="form-control" id="form-tool" required>
-                        <option value="">選択してください</option>
-                        <option value="ChatGPT">ChatGPT</option>
-                        <option value="Claude">Claude</option>
-                        <option value="Gemini">Gemini</option>
-                        <option value="Notion AI">Notion AI</option>
-                        <option value="その他">その他</option>
-                    </select>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>使用ツール<span>必須</span></label>
+                        <select class="form-control" id="form-tool" required>
+                            <option value="ChatGPT">ChatGPT</option>
+                            <option value="Claude">Claude</option>
+                            <option value="Gemini">Gemini</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>カテゴリ<span>必須</span></label>
+                        <select class="form-control" id="form-category" required>
+                            <option value="事務効率化">事務効率化</option>
+                            <option value="診療支援">診療支援</option>
+                            <option value="患者サービス">患者サービス</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label>カテゴリ<span>必須</span></label>
-                    <select class="form-control" id="form-category" required>
-                        <option value="">選択してください</option>
-                        <option value="事務効率化">事務効率化</option>
-                        <option value="診療支援">診療支援</option>
-                        <option value="患者サービス">患者サービス</option>
-                        <option value="教育・研修">教育・研修</option>
-                    </select>
+
+                <!-- 詳細項目 -->
+                <div class="form-group">
+                    <label>1. 解決したかった課題<span>必須</span></label>
+                    <textarea class="form-control" id="form-goal" placeholder="（例）紹介状の作成に1件20分かかっており、医師の残業の原因になっていた。" required></textarea>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label>具体的な活用方法（プロンプトや運用フローなど）<span>必須</span></label>
-                <textarea class="form-control" id="form-content" placeholder="どのような課題があり、AIをどう使って、どのような結果が得られたか詳しく記入してください。" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>参考画像</label>
-                <div class="upload-area" onclick="document.getElementById('file-upload').click()">
-                    <i data-lucide="image"></i>
-                    <p id="upload-status">クリックして画像をアップロード、またはドラッグ＆ドロップ</p>
-                    <span class="hint">スクリーンショットや運用フロー図など（最大5MB）</span>
-                    <input type="file" id="file-upload" hidden accept="image/*">
+                <div class="form-group">
+                    <label>2. どのように解決したか（プロンプト等）<span>必須</span></label>
+                    <textarea class="form-control" id="form-how" placeholder="（例）電子カルテの内容をコピーし、特定のプロンプトでChatGPTに要約させる運用を開始した。" required></textarea>
                 </div>
-            </div>
-
-            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid var(--border); padding-top: 24px;">
-                <div>
-                    <label>病院・クリニック名<span>必須</span></label>
-                    <input type="text" class="form-control" id="form-hospital" placeholder="〇〇病院" required>
+                <div class="form-group">
+                    <label>3. どのような効果があったか<span>必須</span></label>
+                    <textarea class="form-control" id="form-impact" placeholder="（例）1件3分に短縮され、月間の残業時間が平均10時間削減された。" required></textarea>
                 </div>
-                <div>
-                    <label>投稿者名（ニックネーム可）<span>必須</span></label>
-                    <input type="text" class="form-control" id="form-author" placeholder="山田 太郎（医師）" required>
+                <div class="form-group">
+                    <label>4. その他（補足・注意点）</label>
+                    <textarea class="form-control" id="form-other" placeholder="（例）個人情報の入力には細心の注意を払っている。"></textarea>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label>メールアドレス<span>必須</span></label>
-                <input type="email" class="form-control" id="form-email" placeholder="example@hospital.com" required>
-                <p class="hint">承認通知用。サイト上には公開されません。</p>
-            </div>
+                <!-- 画像選択 -->
+                <div class="form-group">
+                    <label>サムネイル画像</label>
+                    <div class="upload-section">
+                        <div class="upload-area" onclick="document.getElementById('file-upload').click()">
+                            <i data-lucide="upload-cloud"></i>
+                            <p id="upload-status" style="font-weight: bold; margin-top: 10px;">画像をアップロード</p>
+                            <input type="file" id="file-upload" hidden accept="image/*">
+                        </div>
+                        <div>
+                            <p style="font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; color: var(--text-muted);">またはデフォルトから選択</p>
+                            <div class="image-picker" id="image-picker">
+                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1576091160550-217359f49f4c?w=400">
+                                    <img src="https://images.unsplash.com/photo-1576091160550-217359f49f4c?w=400" alt="Option 1">
+                                    <i data-lucide="check-circle" style="width: 16px;"></i>
+                                </div>
+                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1516549221152-da7462934a64?w=400">
+                                    <img src="https://images.unsplash.com/photo-1516549221152-da7462934a64?w=400" alt="Option 2">
+                                    <i data-lucide="check-circle" style="width: 16px;"></i>
+                                </div>
+                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400">
+                                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="Option 3">
+                                    <i data-lucide="check-circle" style="width: 16px;"></i>
+                                </div>
+                                <div class="picker-option" data-img="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=400">
+                                    <img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=400" alt="Option 4">
+                                    <i data-lucide="check-circle" style="width: 16px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div style="margin-top: 40px;">
-                <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; justify-content: center; height: 54px; font-size: 1.1rem;">
+                <!-- 投稿者情報 -->
+                <div class="form-group" style="border-top: 1px solid var(--border); padding-top: 32px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px;">
+                        <div>
+                            <label>病院・クリニック名<span>必須</span></label>
+                            <input type="text" class="form-control" id="form-hospital" placeholder="〇〇病院" required>
+                        </div>
+                        <div>
+                            <label>投稿者名<span>必須</span></label>
+                            <input type="text" class="form-control" id="form-author" placeholder="山田 太郎（医師）" required>
+                        </div>
+                    </div>
+                    <label>表示設定（サイト上での公開）</label>
+                    <div class="toggle-group">
+                        <label class="toggle-item"><input type="checkbox" id="show-hospital" checked> 病院名を表示する</label>
+                        <label class="toggle-item"><input type="checkbox" id="show-author" checked> 名前を表示する</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>通知用メールアドレス<span>必須</span></label>
+                    <input type="email" class="form-control" id="form-email" placeholder="example@hospital.com" required>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; height: 60px; font-size: 1.25rem;">
                     事例を投稿する
                 </button>
-                    <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">
-                        ※ 管理者の承認後に公開されます。
-                    </p>
-                </div>
             </form>
         </div>
     </main>
 
-    <footer style="padding: 40px 0;">
-        <p style="text-align: center; color: var(--text-muted); font-size: 0.875rem;">&copy; 2026 MedAI HUB</p>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
-    <script src="app.js"></script>
     <script>
         lucide.createIcons();
         
-        const form = document.getElementById('post-form');
-        const submitBtn = document.getElementById('submit-btn');
+        let selectedDefaultImg = null;
+        const pickerOptions = document.querySelectorAll('.picker-option');
         const fileInput = document.getElementById('file-upload');
         const uploadStatus = document.getElementById('upload-status');
 
+        pickerOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                pickerOptions.forEach(p => p.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedDefaultImg = opt.dataset.img;
+                fileInput.value = ""; // Clear file if picker selected
+                uploadStatus.innerText = "画像をアップロード";
+                uploadStatus.parentElement.style.background = "";
+            });
+        });
+
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
-                uploadStatus.innerText = `選択済み: ${fileInput.files[0].name}`;
-                uploadStatus.style.color = 'var(--primary)';
+                uploadStatus.innerText = `選択: ${fileInput.files[0].name}`;
+                uploadStatus.parentElement.style.background = "var(--primary-light)";
+                pickerOptions.forEach(p => p.classList.remove('selected'));
+                selectedDefaultImg = null;
             }
         });
 
-        form.addEventListener('submit', async (e) => {
+        document.getElementById('post-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            if (!window.medai.client) {
-                alert('Supabaseが設定されていません。supabase.jsを確認してください。');
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.innerText = '送信中...';
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true; btn.innerText = "送信中...";
 
             try {
-                let imageUrl = null;
+                let finalImageUrl = selectedDefaultImg;
 
-                // 1. Image Upload (Shortening for demo, but setup bucket 'case-images' first)
                 if (fileInput.files.length > 0) {
                     const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = `${Math.random()}.${fileExt}`;
-                    const filePath = `uploads/${fileName}`;
-
+                    const fileName = `${Date.now()}-${file.name}`;
                     const { error: uploadError } = await window.medai.client.storage
-                        .from('case-images')
-                        .upload(filePath, file);
-
+                        .from('case-images').upload(`uploads/${fileName}`, file);
                     if (!uploadError) {
                         const { data: { publicUrl } } = window.medai.client.storage
-                            .from('case-images')
-                            .getPublicUrl(filePath);
-                        imageUrl = publicUrl;
+                            .from('case-images').getPublicUrl(`uploads/${fileName}`);
+                        finalImageUrl = publicUrl;
                     }
                 }
 
-                // 2. Insert into DB
-                const { data, error } = await window.medai.client
-                    .from('cases')
-                    .insert([{
-                        title: document.getElementById('form-title').value,
-                        tool: document.getElementById('form-tool').value,
-                        category: document.getElementById('form-category').value,
-                        content: document.getElementById('form-content').value,
-                        hospital_name: document.getElementById('form-hospital').value,
-                        author_name: document.getElementById('form-author').value,
-                        email: document.getElementById('form-email').value,
-                        image_url: imageUrl,
-                        status: 'pending' // Always pending at first
-                    }]);
+                const { error } = await window.medai.client.from('cases').insert([{
+                    title: document.getElementById('form-title').value,
+                    tool: document.getElementById('form-tool').value,
+                    category: document.getElementById('form-category').value,
+                    content_goal: document.getElementById('form-goal').value,
+                    content_how: document.getElementById('form-how').value,
+                    content_impact: document.getElementById('form-impact').value,
+                    content_other: document.getElementById('form-other').value,
+                    hospital_name: document.getElementById('form-hospital').value,
+                    author_name: document.getElementById('form-author').value,
+                    email: document.getElementById('form-email').value,
+                    show_hospital: document.getElementById('show-hospital').checked,
+                    show_author: document.getElementById('show-author').checked,
+                    image_url: finalImageUrl,
+                    status: 'pending'
+                }]);
 
                 if (error) throw error;
-
-                alert('投稿ありがとうございます！管理者の承認までお待ちください。');
+                alert('投稿が完了しました！承認をお待ちください。');
                 window.location.href = 'index.html';
-
             } catch (err) {
-                console.error(err);
-                alert('エラーが発生しました: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = '事例を投稿する';
+                alert(err.message);
+                btn.disabled = false; btn.innerText = "事例を投稿する";
             }
         });
     </script>

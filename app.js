@@ -1,6 +1,4 @@
-// Mock Data removed for production
-const mockCases = [];
-
+// MedAI HUB - Central App Logic
 const DEFAULT_IMAGES = [
     "https://images.unsplash.com/photo-1576091160550-217359f49f4c?auto=format&fit=crop&q=80&w=800",
     "https://images.unsplash.com/photo-1516549221152-da7462934a64?auto=format&fit=crop&q=80&w=800",
@@ -8,9 +6,19 @@ const DEFAULT_IMAGES = [
     "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&q=80&w=800"
 ];
 
-function getRandomDefaultImage(id) {
-    const index = id % DEFAULT_IMAGES.length;
-    return DEFAULT_IMAGES[index];
+// UUIDから数字のインデックスを生成するヘルパー
+function getIndexFromId(id) {
+    if (!id) return 0;
+    let hash = 0;
+    const str = String(id);
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return Math.abs(hash);
+}
+
+function getRandomDefaultImage(index) {
+    return DEFAULT_IMAGES[index % DEFAULT_IMAGES.length];
 }
 
 // Helper to render case cards
@@ -18,16 +26,20 @@ function renderCards(containerId, cases) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    if (cases.length === 0) {
+    if (!cases || cases.length === 0) {
         container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted);">まだ事例がありません。最初の事例を投稿してみませんか？</div>';
         return;
     }
 
     container.innerHTML = cases.map(c => {
-        const displayImage = c.image_url || getRandomDefaultImage(c.id);
+        const displayImage = c.image_url || getRandomDefaultImage(getIndexFromId(c.id));
+        const hospitalDisplay = c.show_hospital ? c.hospital_name : "（非公開）";
+        
         return `
         <article class="card">
-            <img src="${displayImage}" alt="${c.title}" class="card-img">
+            <div style="position: relative; overflow: hidden; height: 200px;">
+                <img src="${displayImage}" alt="${c.title}" class="card-img">
+            </div>
             <div class="card-body">
                 <span class="card-tag">${c.category}</span>
                 <h3><a href="detail.html?id=${c.id}">${c.title}</a></h3>
@@ -35,17 +47,15 @@ function renderCards(containerId, cases) {
             <div class="card-footer">
                 <div class="hospital-name">
                     <i data-lucide="building" style="width:16px"></i>
-                    ${c.hospital_name}
+                    ${hospitalDisplay}
                 </div>
                 <div class="card-stats">
-                    <span><i data-lucide="eye" style="width:14px"></i> ${c.views}</span>
-                    <span><i data-lucide="thumbs-up" style="width:14px"></i> ${c.likes}</span>
+                    <span><i data-lucide="eye" style="width:14px"></i> ${c.views || 0}</span>
                 </div>
             </div>
         </article>
     `}).join('');
     
-    // Re-initialize icons for dynamica content
     if (window.lucide) {
         lucide.createIcons();
     }
@@ -54,8 +64,8 @@ function renderCards(containerId, cases) {
 // Supabase Integration Logic
 async function fetchCases() {
     if (!window.medai || !window.medai.client) {
-        console.warn('Supabase not configured, using mock data.');
-        return mockCases;
+        console.warn('Supabase not configured.');
+        return [];
     }
 
     const { data, error } = await window.medai.client
@@ -66,7 +76,7 @@ async function fetchCases() {
 
     if (error) {
         console.error('Error fetching cases:', error);
-        return mockCases;
+        return [];
     }
     return data;
 }
@@ -75,12 +85,21 @@ async function fetchCases() {
 document.addEventListener('DOMContentLoaded', async () => {
     const cases = await fetchCases();
     
-    // Render featured cases (by likes)
-    renderCards('featured-grid', [...cases].sort((a,b) => b.likes - a.likes).slice(0, 3));
+    // featured-grid (Likes rank)
+    const featured = document.getElementById('featured-grid');
+    if (featured) {
+        renderCards('featured-grid', [...cases].sort((a,b) => (b.views||0) - (a.views||0)).slice(0, 3));
+    }
     
-    // Render latest cases
-    renderCards('latest-grid', cases.slice(0, 6));
+    // latest-grid
+    const latest = document.getElementById('latest-grid');
+    if (latest) {
+        renderCards('latest-grid', cases.slice(0, 6));
+    }
 
-    // For all-cases-grid (list page)
-    renderCards('all-cases-grid', cases);
+    // all-cases-grid (list page)
+    const all = document.getElementById('all-cases-grid');
+    if (all) {
+        renderCards('all-cases-grid', cases);
+    }
 });
