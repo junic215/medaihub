@@ -4,36 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedAI HUB | 医療現場のAI活用を共有するコミュニティ</title>
-    <meta name="description" content="病院・クリニックでのAI活用事例を共有し、医療現場のDXを加速させるコミュニティサイトです。">
+    <title>MedAI HUB | 医療現場のAI事例共有コミュニティ</title>
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&family=Inter:wght@400;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
-    <header class="container">
-        <nav>
-            <a href="index.html" class="logo">
-                <i data-lucide="activity"></i>
-                MedAI HUB
-            </a>
-            <ul class="nav-links">
-                <li><a href="list.html" class="nav-link">事例を見る</a></li>
-                <li><a href="ranking.html" class="nav-link">ランキング</a></li>
-                <li><a href="service.html" class="nav-link">導入支援</a></li>
-            </ul>
-            <div class="nav-actions">
-                <a href="post.html" class="btn btn-primary">
-                    <i data-lucide="plus-circle"></i>
-                    事例を投稿する
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i data-lucide="activity"></i>
+                    MedAI HUB
                 </a>
-            </div>
-        </nav>
+                <div class="nav-actions">
+                    <a href="post.html" class="btn btn-primary nav-btn">
+                        事例を投稿する
+                    </a>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main>
@@ -43,27 +36,22 @@
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <h1>医療現場の<br><span style="color: var(--primary)">AI活用を共有する</span></h1>
-                <p class="hero-desc">
-                    全国の病院・クリニックでの活用事例が集まる医療AIコミュニティ。<br>現場の知恵を共有し、医療の未来を共に創りましょう。</p>
+                <p class="hero-desc">全国の病院・クリニックでの活用事例が集まるコミュニティ。</p>
                 <div class="hero-ctas">
                     <a href="list.html" class="btn btn-primary" style="padding: 16px 40px;">
                         事例を探す
-                    </a>
-                    <a href="service.html" class="btn btn-secondary" style="border: none; background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px);">
-                        サービス紹介
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- Featured Section -->
+        <!-- Ranking Section -->
         <section class="featured container">
             <div class="section-header">
                 <h2>注目事例ランキング</h2>
-                <a href="ranking.html" class="view-all">すべて見る <i data-lucide="chevron-right"></i></a>
             </div>
             <div class="ranking-scroll" id="featured-grid">
-                <!-- Cards will be injected by JS -->
+                <!-- JS will inject top 1-5 here -->
             </div>
         </section>
 
@@ -71,32 +59,29 @@
         <section class="latest container">
             <div class="section-header">
                 <h2>最新の投稿</h2>
-                <a href="list.html" class="view-all">検索・フィルタ <i data-lucide="chevron-right"></i></a>
             </div>
             <div class="card-grid" id="latest-grid">
-                <!-- Cards will be injected by JS -->
+                <!-- JS will inject contents -->
+            </div>
+            <div class="load-more-container">
+                <button id="load-more-btn" class="btn btn-outline" style="cursor:pointer">もっと見る</button>
             </div>
         </section>
 
         <!-- Service CTA -->
         <section class="service-teaser container">
             <div class="glass-card teaser-box">
-                <div class="teaser-content">
-                    <h3>AI導入でお困りですか？</h3>
-                    <p>MedAI HUBを運営する私たちのチームが、貴院に最適なAIツールの選定から運用保守までトータルでサポートします。</p>
+                <div class="teaser-content" style="max-width: 600px;">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 20px;">AI導入でお困りですか？</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 24px;">MedAI HUBを運営する私たちのチームが、貴院に最適なAIツールの選定から運用保守までトータルでサポートします。</p>
                     <a href="service.html" class="btn btn-primary">無料で相談する</a>
-                </div>
-                <div class="teaser-icon">
-                    <i data-lucide="sparkles"></i>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="container">
-        <div class="footer-bottom">
-            <p>&copy; 2026 MedAI HUB. by NESIC Team</p>
-        </div>
+    <footer class="container" style="padding: 60px 0; border-top: 1px solid var(--border);">
+        <p style="text-align: center; color: var(--text-muted);">&copy; 2026 MedAI HUB</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

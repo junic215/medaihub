@@ -1,12 +1,6 @@
-// MedAI HUB - Central App Logic
-const DEFAULT_IMAGES = [
-    "01.png",
-    "02.png",
-    "03.png",
-    "04.png"
-];
+// MedAI HUB - Logic
+const DEFAULT_IMAGES = ["01.png", "02.png", "03.png", "04.png"];
 
-// UUIDから数字のインデックスを生成するヘルパー
 function getIndexFromId(id) {
     if (!id) return 0;
     let hash = 0;
@@ -17,40 +11,42 @@ function getIndexFromId(id) {
     return Math.abs(hash);
 }
 
-function getRandomDefaultImage(index) {
+function getRandomDefaultImage(id) {
+    const index = getIndexFromId(id);
     return DEFAULT_IMAGES[index % DEFAULT_IMAGES.length];
 }
 
-// Helper to render case cards
-function renderCards(containerId, cases) {
+let allCases = [];
+let latestVisibleCount = 4;
+
+function renderCards(containerId, cases, withRank = false) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
     if (!cases || cases.length === 0) {
-        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted);">まだ事例がありません。最初の事例を投稿してみませんか？</div>';
+        if (!withRank) container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted); font-weight: bold;">事例がありません。</div>';
         return;
     }
 
-    container.innerHTML = cases.map(c => {
-        const displayImage = c.image_url || getRandomDefaultImage(getIndexFromId(c.id));
+    container.innerHTML = cases.map((c, idx) => {
+        const displayImage = c.image_url || getRandomDefaultImage(c.id);
         const hospitalDisplay = c.show_hospital ? c.hospital_name : "（非公開）";
+        const rankHtml = withRank ? `<div class="rank-badge">${idx + 1}位</div>` : "";
         
         return `
         <article class="card">
-            <div style="position: relative; overflow: hidden; height: 200px;">
-                <img src="${displayImage}" alt="${c.title}" class="card-img">
+            ${rankHtml}
+            <div style="overflow: hidden; height: 180px;">
+                <img src="${displayImage}" alt="${c.title}" class="card-img" style="width:100%; height:100%; object-fit:cover;">
             </div>
             <div class="card-body">
-                <span class="card-tag">${c.category}</span>
-                <h3><a href="detail.html?id=${c.id}">${c.title}</a></h3>
+                <span style="font-size:0.7rem; color:var(--primary); font-weight:800; margin-bottom:8px; display:block;">${c.category}</span>
+                <h3><a href="detail.html?id=${c.id}" style="color:inherit; text-decoration:none;">${c.title}</a></h3>
             </div>
             <div class="card-footer">
-                <div class="hospital-name">
-                    <i data-lucide="building" style="width:16px"></i>
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <i data-lucide="building" style="width:14px"></i>
                     ${hospitalDisplay}
-                </div>
-                <div class="card-stats">
-                    <span><i data-lucide="eye" style="width:14px"></i> ${c.views || 0}</span>
                 </div>
             </div>
         </article>
@@ -61,45 +57,40 @@ function renderCards(containerId, cases) {
     }
 }
 
-// Supabase Integration Logic
 async function fetchCases() {
-    if (!window.medai || !window.medai.client) {
-        console.warn('Supabase not configured.');
-        return [];
-    }
-
+    if (!window.medai || !window.medai.client) return [];
     const { data, error } = await window.medai.client
         .from('cases')
         .select('*')
         .eq('status', 'approved')
         .order('created_at', { ascending: false });
-
-    if (error) {
-        console.error('Error fetching cases:', error);
-        return [];
-    }
-    return data;
+    return error ? [] : data;
 }
 
-// Initialization
 document.addEventListener('DOMContentLoaded', async () => {
-    const cases = await fetchCases();
+    allCases = await fetchCases();
     
-    // featured-grid (Likes rank)
+    // Ranking (Top 5 by views)
     const featured = document.getElementById('featured-grid');
     if (featured) {
-        renderCards('featured-grid', [...cases].sort((a,b) => (b.views||0) - (a.views||0)).slice(0, 3));
+        const top5 = [...allCases].sort((a,b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
+        renderCards('featured-grid', top5, true);
     }
     
-    // latest-grid
-    const latest = document.getElementById('latest-grid');
-    if (latest) {
-        renderCards('latest-grid', cases.slice(0, 6));
+    // Latest (First 4)
+    const latestGrid = document.getElementById('latest-grid');
+    if (latestGrid) {
+        renderCards('latest-grid', allCases.slice(0, latestVisibleCount));
     }
 
-    // all-cases-grid (list page)
-    const all = document.getElementById('all-cases-grid');
-    if (all) {
-        renderCards('all-cases-grid', cases);
+    // Load More Logic
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+        if (allCases.length <= latestVisibleCount) loadMoreBtn.style.display = 'none';
+        loadMoreBtn.addEventListener('click', () => {
+            latestVisibleCount += 4;
+            renderCards('latest-grid', allCases.slice(0, latestVisibleCount));
+            if (latestVisibleCount >= allCases.length) loadMoreBtn.style.display = 'none';
+        });
     }
 });
