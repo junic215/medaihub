@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .detail-header {
-            padding: 80px 0 40px;
+            padding: 60px 0 40px;
             border-bottom: 1px solid var(--border);
             margin-bottom: 40px;
         }
@@ -21,6 +21,7 @@
             color: var(--text-muted);
             margin-bottom: 16px;
             font-weight: 600;
+            flex-wrap: wrap;
         }
         .detail-layout {
             display: grid;
@@ -54,6 +55,8 @@
             display: flex;
             gap: 16px;
             z-index: 1000;
+            width: max-content;
+            max-width: 90vw;
         }
         .reaction-btn {
             display: flex;
@@ -81,6 +84,7 @@
         @media (max-width: 1024px) {
             .detail-layout { grid-template-columns: 1fr; }
             .sidebar-card { position: static; }
+            .content-box { padding: 24px; }
         }
     </style>
 </head>
@@ -98,84 +102,70 @@
     </header>
 
     <main class="container">
-        <div class="detail-header">
-            <div class="detail-meta">
-                <span>事務効率化</span>
-                <span>•</span>
-                <span>2026.04.10</span>
-                <span>•</span>
-                <span style="display: flex; align-items: center; gap: 4px;"><i data-lucide="eye" style="width:16px"></i> 1,250 views</span>
-            </div>
-            <h1>ChatGPTを使用した紹介状の半自動作成システム</h1>
-            <div style="display: flex; align-items: center; gap: 12px; margin-top: 24px;">
-                <div style="width: 40px; height: 40px; background: var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                    <i data-lucide="user"></i>
+        <div id="detail-loading" style="padding: 100px; text-align: center;">読み込み中...</div>
+        
+        <div id="detail-content" style="display: none;">
+            <div class="detail-header">
+                <div class="detail-meta">
+                    <span id="meta-category"></span>
+                    <span>•</span>
+                    <span id="meta-date"></span>
+                    <span>•</span>
+                    <span style="display: flex; align-items: center; gap: 4px;"><i data-lucide="eye" style="width:16px"></i> <span id="meta-views"></span> views</span>
                 </div>
-                <div>
-                    <div style="font-weight: 700;">山田 太郎（医師）</div>
-                    <div style="color: var(--text-muted); font-size: 0.875rem;">聖マリア中央病院</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="detail-layout">
-            <div class="detail-main">
-                <div class="content-box">
-                    <img src="https://images.unsplash.com/photo-1516549221152-da7462934a64?auto=format&fit=crop&q=80&w=1200" alt="Case Image" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 32px;">
-                    
-                    <h2>解決した課題</h2>
-                    <p>当院では一日平均20件以上の紹介状（診療情報提供書）を作成しており、医師の事務作業負担が大きな課題となっていました。一件あたり15分〜20分を要しており、残業時間の増加につながっていました。</p>
-
-                    <h2>使用したAIツール</h2>
-                    <p><strong>ChatGPT (GPT-4)</strong></p>
-
-                    <h2>具体的な活用方法</h2>
-                    <p>電子カルテの経過記録を構造化してコピーし、ChatGPTに特定のプロンプトを入力することで、紹介状の素案を5秒で作成するフローを構築しました。医師は生成された内容を確認・修正するだけで済むようになり、一件あたりの作成時間が3分以下に短縮されました。</p>
-                    
-                    <div style="background: var(--bg); padding: 24px; border-radius: var(--radius-sm); border-left: 4px solid var(--primary); margin: 24px 0;">
-                        <h4 style="margin-bottom: 8px;">実際のプロンプト例：</h4>
-                        <code>あなたは熟練の医師です。以下の診療データから、紹介先の医師が理解しやすい診療情報提供書（紹介状）を作成してください。形式は...</code>
+                <h1 id="detail-title"></h1>
+                <div style="display: flex; align-items: center; gap: 12px; margin-top: 24px;">
+                    <div style="width: 40px; height: 40px; background: var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="user"></i>
                     </div>
-
-                    <h2>得られた効果</h2>
-                    <p>・作成時間を約80%削減<br>・内容の記載漏れが減少<br>・若手医師の教育コスト削減</p>
-                </div>
-
-                <div style="margin-top: 40px;">
-                    <h3>コメント (2)</h3>
-                    <div style="background: var(--surface); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-top: 16px;">
-                        <div style="font-weight: 700; margin-bottom: 8px;">佐藤 健一（事務長）</div>
-                        <p>素晴らしい取り組みですね。当院でも導入を検討したいのですが、個人情報の扱いについてどのようにクリアされましたか？</p>
-                        <div style="margin-top: 12px; color: var(--primary); font-weight: 600; cursor: pointer;">返信する</div>
+                    <div>
+                        <div id="detail-author" style="font-weight: 700;"></div>
+                        <div id="detail-hospital" style="color: var(--text-muted); font-size: 0.875rem;"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="detail-sidebar">
-                <div class="sidebar-card">
-                    <h3>AI導入でお困りですか？</h3>
-                    <p style="margin: 16px 0; color: var(--text-main);">MedAI HUBが、貴院の業務効率化を直接サポートします。この事例のようなシステムを導入したい方は、お気軽にご相談ください。</p>
-                    <a href="service.html" class="btn btn-primary" style="width: 100%; justify-content: center;">詳しく見る</a>
+            <div class="detail-layout">
+                <div class="detail-main">
+                    <div class="content-box">
+                        <div style="width: 100%; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 32px;">
+                          <img id="detail-image" src="" alt="Case Image" style="width: 100%; height: auto; display: block;">
+                        </div>
+                        
+                        <h2>解決した課題 / 背景</h2>
+                        <p id="detail-body" style="white-space: pre-wrap;"></p>
+
+                        <h2>使用したAIツール</h2>
+                        <p><strong id="detail-tool"></strong></p>
+                    </div>
+                </div>
+
+                <div class="detail-sidebar">
+                    <div class="sidebar-card">
+                        <h3>AI導入でお困りですか？</h3>
+                        <p style="margin: 16px 0; color: var(--text-main);">MedAI HUBが、貴院の業務効率化を直接サポートします。この事例のようなシステムを導入したい方は、お気軽にご相談ください。</p>
+                        <a href="service.html" class="btn btn-primary" style="width: 100%; justify-content: center;">詳しく見る</a>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <div class="reaction-bar">
-        <button class="reaction-btn">
+        <button class="reaction-btn" onclick="alert('リクエストを受け付けました！')">
             <i data-lucide="thumbs-up"></i>
             <span>いいね</span>
         </button>
-        <button class="reaction-btn">
+        <button class="reaction-btn" onclick="alert('リクエストを受け付けました！')">
             <i data-lucide="flame"></i>
             <span>最高！</span>
         </button>
-        <button class="reaction-btn">
+        <button class="reaction-btn" onclick="alert('リクエストを受け付けました！')">
             <i data-lucide="lightbulb"></i>
             <span>マネしたい</span>
         </button>
         <div style="width: 1px; background: var(--border); margin: 0 8px;"></div>
-        <button class="reaction-btn">
+        <button class="reaction-btn" onclick="alert('シェア機能は準備中です')">
             <i data-lucide="share-2"></i>
             <span>シェア</span>
         </button>
@@ -190,6 +180,51 @@
     <script src="app.js"></script>
     <script>
         lucide.createIcons();
+
+        async function loadDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (!id) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            if (!window.medai.client) {
+                console.error("Supabase client not found");
+                return;
+            }
+
+            const { data, error } = await window.medai.client
+                .from('cases')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (data) {
+                document.getElementById('detail-loading').style.display = 'none';
+                document.getElementById('detail-content').style.display = 'grid';
+
+                document.getElementById('detail-title').innerText = data.title;
+                document.getElementById('meta-category').innerText = data.category;
+                document.getElementById('meta-views').innerText = data.views || 0;
+                document.getElementById('meta-date').innerText = new Date(data.created_at).toLocaleDateString();
+                document.getElementById('detail-author').innerText = data.author_name;
+                document.getElementById('detail-hospital').innerText = data.hospital_name;
+                document.getElementById('detail-body').innerText = data.content;
+                document.getElementById('detail-tool').innerText = data.tool;
+
+                const img = document.getElementById('detail-image');
+                img.src = data.image_url || getRandomDefaultImage(data.id);
+                
+                // 閲覧数を増やす(バックグラウンドで)
+                window.medai.client.rpc('increment_views', { case_id: id });
+            } else {
+                document.getElementById('detail-loading').innerText = '事例が見つかりませんでした。';
+            }
+            lucide.createIcons();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDetail);
     </script>
 </body>
 </html>
