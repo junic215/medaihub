@@ -95,9 +95,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Latest Feed
     const latest = document.getElementById('latest-grid');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+
+    function renderLatest() {
+        if (!latest) return;
+        const visibleCases = allCases.slice(0, latestVisibleCount);
+        renderCards('latest-grid', visibleCases, false, false);
+        
+        // Hide button if no more cases
+        if (loadMoreBtn) {
+            if (latestVisibleCount >= allCases.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'inline-block';
+            }
+        }
+    }
+
     if (latest) {
-        // スマホなら無限ループ、PCなら通常のグリッド
-        renderCards('latest-grid', allCases.slice(0, 8), false, isMobile);
-        if (isMobile) initInfiniteScroll('latest-grid');
+        renderLatest();
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                latestVisibleCount += 6;
+                renderLatest();
+            });
+        }
     }
 });

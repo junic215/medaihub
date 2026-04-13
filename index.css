@@ -20,7 +20,7 @@ nav { height: 70px; display: flex; align-items: center; justify-content: space-b
 .logo { font-size: 1.1rem; font-weight: 850; color: var(--primary); display: flex; align-items: center; gap: 8px; }
 
 /* Hero Section */
-.hero { position: relative; height: 350px; border-radius: var(--radius-lg); overflow: hidden; margin: 10px 0; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
+.hero { position: relative; height: 350px; border-radius: var(--radius-lg); overflow: hidden; margin: 10px auto; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
 .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('medai_hub_hero_1775828576434.png'); background-size: cover; background-position: center; z-index: 1; }
 .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 2; }
 .hero-content { position: relative; z-index: 3; padding: 0 20px; }
@@ -49,22 +49,27 @@ nav { height: 70px; display: flex; align-items: center; justify-content: space-b
 
 /* スマホ版限定！徹底小型化 */
 @media (max-width: 768px) {
-  .hero { height: 260px; border-radius: 0; margin-left: -24px; margin-right: -24px; }
+  .hero { height: 260px; border-radius: 0; }
   .hero h1 { font-size: 1.6rem; }
 
-  /* 最新の投稿も強制的に横並び */
+  /* 最新の投稿：モバイル版は横並び2案件のグリッド */
   #latest-grid {
-    display: flex !important;
-    gap: 12px !important;
-    overflow-x: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
     padding-bottom: 20px;
   }
   #latest-grid::-webkit-scrollbar { display: none; }
 
-  /* ランキングと最新投稿のカードを「徹底的に小さく」 */
-  .ranking-scroll .card, #latest-grid .card {
-    min-width: 150px !important; /* 横幅を150pxまで縮小 */
+  /* ランキングカードは横スクロールを維持、最新投稿カードはグリッドに合わせて調整 */
+  .ranking-scroll .card {
+    min-width: 150px !important;
     width: 150px !important;
+    border-radius: 12px !important;
+  }
+  #latest-grid .card {
+    min-width: 0 !important;
+    width: 100% !important;
     border-radius: 12px !important;
   }
   
